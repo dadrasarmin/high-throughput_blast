@@ -25,7 +25,7 @@ conda activate high_throughput_blast
 mamba install -c conda-forge -c bioconda -n high_throughput_blast snakemake blast seqkit
 ```
 
-## "Do or do not. There is no try"
+## Protocol
 
 1. I assume you have already moved your protein sequence file that you want to use as query to a server. You also have a set of sequences that you want to use as local database. Here, I use *Arabidopsis thaliana* [1](https://phytozome-next.jgi.doe.gov/info/Athaliana_Araport11) protein sequences to make the database and *Mesotaenium endlicherianum* [2](https://mesotaenium.uni-goettingen.de/index.html) protein sequences as my query. If the sequence IDs contain extra information beside IDs (separated by space or other delimeters), please remove them. Sometimes they cause error. You can do that via a simple regex.
 
