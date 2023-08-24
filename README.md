@@ -87,7 +87,6 @@ rule run_blast:
     threads: 15
     log:
         os.path.join(project_dir, splited/logs/{pep}_blast.log")
-    conda: "envs/blast.yaml"
     shell:
         """
         blastp -db {DB} -query {input.pep} -outfmt 6 -out {output} -num_threads 15 -evalue 1e-7 -max_target_seqs 50
@@ -114,17 +113,7 @@ run_blast:
   ncpus: 17
 ```
 
-6. Create a folder called `envs` and in that folder create a file called `blast.yaml` with these line inside it.
-
-```
-channels:
-    - bioconda
-    - conda-forge
-dependencies:
-    - blast =2.14.0
-```
-
-7. Create a bash file with a name you like and add these lines.
+6. Create a bash file with a name you like and add these lines.
 
 ```
 #!/bin/bash
@@ -142,13 +131,13 @@ SLURM_ARGS="-p {cluster.partition} -N {cluster.nodes} -n {cluster.ntasks} -c {cl
 snakemake -j 100 -pr --use-conda --cluster-config cluster.yaml --cluster "sbatch $SLURM_ARGS"
 ```
 
-8. Move to the output folder and concatenate all outputs into one single fasta file:
+7. Move to the output folder and concatenate all outputs into one single fasta file:
 
 ```
 cat *.outfmt6 >> blast_results.outfmt6
 ```
 
-9. You can get the best blast hit using this.
+8. You can get the best blast hit using this.
 ```
 awk '!x[$1]++' blast_results.outfmt6 > blast_results_best_blast_hit.outfmt6
 ```
