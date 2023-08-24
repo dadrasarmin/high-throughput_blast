@@ -20,7 +20,7 @@ You can set it up whatever you like. I assume you have conda installed and expla
 
 Installing snakemake, blast and seqkit using [mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html) (which is very similar to conda).
 ```
-conda install -n high_throughput_blast -c conda-forge mamba
+conda create -n high_throughput_blast -c conda-forge mamba
 conda activate high_throughput_blast
 mamba install -c conda-forge -c bioconda -n high_throughput_blast snakemake blast seqkit
 ```
