@@ -74,22 +74,24 @@ PEPS, = glob_wildcards(os.path.join(project_dir, "splited/{pep}.fasta"))
 # If you used a different fasta file for your local database, update the line below.
 DB = os.path.join(project_dir, "Athaliana_447_Araport11.protein_primaryTranscriptOnly.fa")
 ######################################################################################################
+######################################################################################################
 
 rule all:
     input:
-        expand(os.path.join(project_dir, "splited/{pep}.outfmt6",pep=PEPS))
+        expand(os.path.join(project_dir, "splited/{pep}.outfmt6"),pep=PEPS)
 
 rule run_blast:
     input:
-        pep = os.path.join(project_dir, splited/{pep}.fasta")
+        pep = os.path.join(project_dir, "splited/{pep}.fasta"),
+        database = DB
     output:
-        os.path.join(project_dir, splited/{pep}.outfmt6")
+        os.path.join(project_dir, "splited/{pep}.outfmt6")
     threads: 15
     log:
-        os.path.join(project_dir, splited/logs/{pep}_blast.log")
+        os.path.join(project_dir, "splited/logs/{pep}_blast.log")
     shell:
         """
-        blastp -db {DB} -query {input.pep} -outfmt 6 -out {output} -num_threads 15 -evalue 1e-7 -max_target_seqs 50
+        blastp -db {input.database} -query {input.pep} -outfmt 6 -out {output} -num_threads 15 -evalue 1e-7 -max_target_seqs 50
         """
 ```
 
