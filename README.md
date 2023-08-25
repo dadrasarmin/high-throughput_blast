@@ -2,7 +2,7 @@
 
 ## Idea
 
-Instead of performing thousands of blast search sequentially, if you have access to HPC or a computer with big RAM and CPU, you can parallelize the process and reduce the time needed. For example, it will be possible to do blast for 20,000 protein sequences in around 130 minutes. The idea is to split the input sequence file into multiple pieces and run the BLAST search simultaneously on each of the split file.
+Instead of performing thousands of blast search sequentially, if you have access to HPC or a computer with big RAM and CPU, you can parallelize the process and reduce the time needed. For example, it will be possible to do blast for 44,092 protein sequences in around 130 minutes (highly depend on your resources, sequence length, database size, etc. Just consider it as an estimation). Let's say each blast query took 2 seconds if you do it in sequential way, for the same number of sequence it would be X minutes (Z%) longer. The idea is to split the input sequence file into multiple pieces and run the BLAST search simultaneously on each of the split file.
 
 ## Requirements
 
