@@ -2,7 +2,7 @@
 
 ## Idea
 
-Instead of performing thousands of blast search sequentially, if you have access to HPC or a computer with big RAM and CPU, you can parallelize the process and reduce the time needed. For example, it will be possible to do blast for 44,092 protein sequences in around 130 minutes (highly depend on your resources, sequence length, database size, etc. Just consider it as an estimation). Let's say each blast query took 2 seconds if you do it in sequential way, for the same number of sequence it would be X minutes (Z%) longer. The idea is to split the input sequence file into multiple pieces and run the BLAST search simultaneously on each of the split file.
+Instead of performing thousands of blast search sequentially, if you have access to HPC or a computer with big RAM and CPU, you can parallelize the process and reduce the time needed. For example, it will be possible to do blast for 44,092 protein sequences in around 48 hours and 05 minutes (highly depend on your resources, sequence length, database size, etc. Just consider it as an estimation.). Let's say each blast query took 5 seconds if you do it in sequential way, for the same number of sequence it would be 61 hours and 13 minutes (30%) longer. **This test was run with `-s 1` which is not the best choice. I suggest `-s 100` or similar numbers.** The idea is to split the input sequence file into multiple pieces and run the BLAST search simultaneously on each of the split file.
 
 ## Requirements
 
@@ -60,7 +60,7 @@ makeblastdb -in Athaliana_447_Araport11.protein_primaryTranscriptOnly.fa -dbtype
 #SBATCH -o job-%J.out
 
 # With -s you can define how many sequence are allowed per file after splitting. Here, we create one file per sequence.
-seqkit split2 Me1_v2.release.gff3.pep.fasta -s 1
+seqkit split2 Me1_v2.release.gff3.pep.fasta -s 100
 ```
 Let's assume I renamed the output folder that contains lots of inputs to `splited`.
 
