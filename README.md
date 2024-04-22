@@ -117,7 +117,7 @@ run_blast:
   ncpus: 17
 ```
 
-6. Create a bash file with a name you like and add these lines. Use this bash file if you are using snakemake v8 and higher
+6. Create a bash file with a name you like and add these lines.
 
 ```
 #!/bin/bash
