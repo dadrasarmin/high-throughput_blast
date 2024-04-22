@@ -1,4 +1,5 @@
 # high-throughput BLAST
+Note: This is an updated version that works with snakemake v8 and higher.
 
 ## Idea
 
@@ -18,11 +19,12 @@ In this file, I assume you are using HPC and slurm as workload manager.
 
 You can set it up whatever you like. I assume you have conda installed and explain everything after that.
 
-Installing snakemake, blast and seqkit using [mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html) (which is very similar to conda).
+Installing snakemake, blast and seqkit using [mamba](https://mamba.readthedocs.io/en/latest/user_guide/mamba.html) (which is very similar to conda). For snakemake v8+ also install the snakemake executor plugin to run it on a cluster. 
 ```
 conda create -n high_throughput_blast -c conda-forge mamba
 conda activate high_throughput_blast
 mamba install -c conda-forge -c bioconda -n high_throughput_blast snakemake blast seqkit
+pip install snakemake-executor-plugin-cluster-generic
 ```
 
 ## Protocol
@@ -95,7 +97,7 @@ rule run_blast:
         """
 ```
 
-5. Create a file named `cluster.yaml` and add these lines.
+5. Create a file named `config.yaml` and add these lines. Put the file into a folder named `profile`
 
 ```
 __default__:
@@ -115,7 +117,7 @@ run_blast:
   ncpus: 17
 ```
 
-6. Create a bash file with a name you like and add these lines.
+6. Create a bash file with a name you like and add these lines. Use this bash file if you are using snakemake v8 and higher
 
 ```
 #!/bin/bash
@@ -127,10 +129,8 @@ run_blast:
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --mail-user=USERNAME@DOMAIN.com # if you like to get an email when the process starts and ends.
 
-SLURM_ARGS="-p {cluster.partition} -N {cluster.nodes} -n {cluster.ntasks} -c {cluster.ncpus} -t {cluster.time} -J {cluster.job-name} -o {cluster.output} -e {cluster.error} --mem={cluster.memory} -C {cluster.node_properties}"
-
-# you can change the parameter after -j to increase or decrease the maximum number of jobs that are active simultanously.
-snakemake -j 100 -pr --use-conda --cluster-config cluster.yaml --cluster "sbatch $SLURM_ARGS"
+# you can change the parameter after -j to increase or decrease the maximum number of jobs that are active simultanously. Change the path after --profile to the path that contains the config.yaml
+snakemake -j 100 -p --software-deployment-method conda --executor cluster-generic --cluster-generic-submit-cmd "sbatch" --profile /absolute/path/to/profile/
 ```
 
 7. Move to the output folder and concatenate all outputs into one single fasta file:
